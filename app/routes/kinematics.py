@@ -11,5 +11,14 @@ def velocity():
     t = data.get('t')
     if u is None or a is None or t is None:
         return jsonify({"error": "Missing input values"}), 400
-    result = compute_velocity(u, a, t)
+    
+    # Convert to float and handle conversion errors
+    try:
+        u_float = float(u)
+        a_float = float(a)
+        t_float = float(t)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Invalid input values - must be numbers"}), 400
+    
+    result = compute_velocity(u_float, a_float, t_float)
     return jsonify({"result": result})
