@@ -11,10 +11,11 @@ def create_app():
         return {"message": "PhysiCalc API is running!"}
 
     # Import blueprints
-    from .routes import kinematics, projectile, work_energy, electricity
+    from .routes import kinematics, projectile, work_energy, electricity, forces
     app.register_blueprint(kinematics.bp)
     app.register_blueprint(projectile.bp)
     app.register_blueprint(work_energy.bp)
     app.register_blueprint(electricity.bp)
+    app.register_blueprint(forces.bp)
     
     return app
