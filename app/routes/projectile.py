@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.formulas.projectile import compute_range, compute_time_of_flight, compute_max_height
 from app.utils.validator import validate_inputs
+from app.utils.error_handler import handle_invalid_input_error, handle_missing_input_error, handle_zero_division_error, handle_generic_error
 
 bp = Blueprint('projectile', __name__, url_prefix='/api/projectile')
 

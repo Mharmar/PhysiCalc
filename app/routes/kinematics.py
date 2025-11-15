@@ -7,6 +7,7 @@ from app.formulas.kinematics import (
     compute_acceleration
 )
 from app.utils.validator import validate_inputs
+from app.utils.error_handler import handle_invalid_input_error, handle_missing_input_error, handle_zero_division_error, handle_generic_error
 
 bp = Blueprint('kinematics', __name__, url_prefix='/api/kinematics')
 
