@@ -4,6 +4,10 @@ from app.utils.validator import validate_inputs
 
 bp = Blueprint('work_energy', __name__, url_prefix='/api/work_energy')
 
+
+# ------------------------
+# Work: W = F * d
+# ------------------------
 @bp.route('/work', methods=['POST'])
 def work_route():
     data = request.json
@@ -14,9 +18,18 @@ def work_route():
         distance = float(data['distance'])
     except (ValueError, TypeError):
         return jsonify({"error": "Inputs must be numbers"}), 400
-    result = compute_work(force, distance)
-    return jsonify({"result": result})
 
+    result = compute_work(force, distance)
+    return jsonify({
+        "formula": "W = F * d",
+        "inputs": {"force": force, "distance": distance},
+        "result": result
+    })
+
+
+# ------------------------
+# Power: P = W / t
+# ------------------------
 @bp.route('/power', methods=['POST'])
 def power_route():
     data = request.json
@@ -31,8 +44,17 @@ def power_route():
         result = compute_power(work, time)
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
-    return jsonify({"result": result})
 
+    return jsonify({
+        "formula": "P = W / t",
+        "inputs": {"work": work, "time": time},
+        "result": result
+    })
+
+
+# ------------------------
+# Kinetic Energy: KE = 1/2 * m * v^2
+# ------------------------
 @bp.route('/kinetic', methods=['POST'])
 def kinetic_route():
     data = request.json
@@ -43,9 +65,18 @@ def kinetic_route():
         velocity = float(data['velocity'])
     except (ValueError, TypeError):
         return jsonify({"error": "Inputs must be numbers"}), 400
-    result = compute_kinetic_energy(mass, velocity)
-    return jsonify({"result": result})
 
+    result = compute_kinetic_energy(mass, velocity)
+    return jsonify({
+        "formula": "KE = 1/2 * m * v^2",
+        "inputs": {"mass": mass, "velocity": velocity},
+        "result": result
+    })
+
+
+# ------------------------
+# Potential Energy: PE = m * g * h
+# ------------------------
 @bp.route('/potential', methods=['POST'])
 def potential_route():
     data = request.json
@@ -56,5 +87,10 @@ def potential_route():
         height = float(data['height'])
     except (ValueError, TypeError):
         return jsonify({"error": "Inputs must be numbers"}), 400
+
     result = compute_potential_energy(mass, height)
-    return jsonify({"result": result})
+    return jsonify({
+        "formula": "PE = m * g * h",
+        "inputs": {"mass": mass, "height": height},
+        "result": result
+    })
