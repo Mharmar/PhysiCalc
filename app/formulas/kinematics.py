@@ -8,7 +8,8 @@ def compute_displacement(u, a, t):
 
 def compute_velocity_squared(u, a, s):
     """Compute final velocity squared v^2 = u^2 + 2 * a * s"""
-    return (u ** 2) + (2 * a * s)
+    result = (u ** 2) + (2 * a * s)
+    return round(result, 2)  # Rounding the result to 2 decimal places
 
 def compute_time(v, u, a):
     """Compute time t = (v - u) / a"""

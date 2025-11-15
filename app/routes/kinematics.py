@@ -68,12 +68,16 @@ def velocity_squared():
     u = float(data['u'])
     a = float(data['a'])
     s = float(data['s'])
-    result = compute_velocity_squared(u, a, s)
+    v_squared = compute_velocity_squared(u, a, s)
+
+    # Calculate final velocity (v), the square root of v^2
+    final_velocity = round(v_squared ** 0.5, 2)
 
     return jsonify({
         "formula": "v^2 = u^2 + 2 * a * s",
         "inputs": {"u": u, "a": a, "s": s},
-        "result": result
+        "result": v_squared,
+        "final_velocity": final_velocity  # Include the final velocity v
     })
 
 
