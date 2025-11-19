@@ -1,7 +1,12 @@
 from flask import Blueprint, request, jsonify
 from app.formulas.projectile import compute_range, compute_time_of_flight, compute_max_height
 from app.utils.validator import validate_inputs
-from app.utils.error_handler import handle_invalid_input_error, handle_missing_input_error, handle_zero_division_error, handle_generic_error
+from app.utils.error_handler import (
+    handle_invalid_input_error,
+    handle_missing_input_error,
+    handle_zero_division_error,
+    handle_generic_error,
+)
 
 bp = Blueprint('projectile', __name__, url_prefix='/api/projectile')
 
@@ -13,16 +18,20 @@ bp = Blueprint('projectile', __name__, url_prefix='/api/projectile')
 def range_route():
     data = request.json
     required = ['u', 'angle']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         u = float(data['u'])
         angle = float(data['angle'])
+        result = compute_range(u, angle)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_range(u, angle)
+        return handle_invalid_input_error("Inputs must be numbers")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
     return jsonify({
         "formula": "R = (u^2 * sin(2θ)) / g",
@@ -38,16 +47,20 @@ def range_route():
 def time_route():
     data = request.json
     required = ['u', 'angle']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         u = float(data['u'])
         angle = float(data['angle'])
+        result = compute_time_of_flight(u, angle)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_time_of_flight(u, angle)
+        return handle_invalid_input_error("Inputs must be numbers")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
     return jsonify({
         "formula": "T = (2 * u * sinθ) / g",
@@ -63,16 +76,20 @@ def time_route():
 def height_route():
     data = request.json
     required = ['u', 'angle']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         u = float(data['u'])
         angle = float(data['angle'])
+        result = compute_max_height(u, angle)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_max_height(u, angle)
+        return handle_invalid_input_error("Inputs must be numbers")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
     return jsonify({
         "formula": "H = (u^2 * sin^2θ) / (2g)",

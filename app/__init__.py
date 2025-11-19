@@ -3,15 +3,10 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app)  # Optional: for Cross-Origin Resource Sharing if needed
     
-    # Simple root route to check if API is running
-    @app.route("/")
-    def home():
-        return {"message": "PhysiCalc API is running!"}
-
     # Import blueprints
-    from .routes import kinematics, projectile, work_energy, electricity, forces
+    from app.routes import kinematics, projectile, work_energy, electricity, forces
     app.register_blueprint(kinematics.bp)
     app.register_blueprint(projectile.bp)
     app.register_blueprint(work_energy.bp)

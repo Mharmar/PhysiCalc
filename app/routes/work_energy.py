@@ -5,28 +5,32 @@ from app.utils.error_handler import handle_invalid_input_error, handle_missing_i
 
 bp = Blueprint('work_energy', __name__, url_prefix='/api/work_energy')
 
-
 # ------------------------
 # Work: W = F * d
 # ------------------------
 @bp.route('/work', methods=['POST'])
 def work_route():
     data = request.json
-    if not validate_inputs(data, ['force', 'distance']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['force', 'distance']
+
+    validation_result = validate_inputs(data, required)
+    if validation_result is not True:
+        return validation_result
+
     try:
         force = float(data['force'])
         distance = float(data['distance'])
+        result = compute_work(force, distance)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
+        return handle_invalid_input_error("Invalid input")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
-    result = compute_work(force, distance)
     return jsonify({
         "formula": "W = F * d",
         "inputs": {"force": force, "distance": distance},
         "result": result
     })
-
 
 # ------------------------
 # Power: P = W / t
@@ -34,17 +38,22 @@ def work_route():
 @bp.route('/power', methods=['POST'])
 def power_route():
     data = request.json
-    if not validate_inputs(data, ['work', 'time']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['work', 'time']
+
+    validation_result = validate_inputs(data, required)
+    if validation_result is not True:
+        return validation_result
+
     try:
         work = float(data['work'])
         time = float(data['time'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-    try:
         result = compute_power(work, time)
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+    except (ValueError, TypeError):
+        return handle_invalid_input_error("Inputs must be numbers")
+    except ZeroDivisionError:
+        return handle_zero_division_error()
+    except Exception as e:
+        return handle_generic_error(str(e))
 
     return jsonify({
         "formula": "P = W / t",
@@ -59,15 +68,21 @@ def power_route():
 @bp.route('/kinetic', methods=['POST'])
 def kinetic_route():
     data = request.json
-    if not validate_inputs(data, ['mass', 'velocity']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['mass', 'velocity']
+
+    validation_result = validate_inputs(data, required)
+    if validation_result is not True:
+        return validation_result
+
     try:
         mass = float(data['mass'])
         velocity = float(data['velocity'])
+        result = compute_kinetic_energy(mass, velocity)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
+        return handle_invalid_input_error("Inputs must be numbers")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
-    result = compute_kinetic_energy(mass, velocity)
     return jsonify({
         "formula": "KE = 1/2 * m * v^2",
         "inputs": {"mass": mass, "velocity": velocity},
@@ -81,15 +96,21 @@ def kinetic_route():
 @bp.route('/potential', methods=['POST'])
 def potential_route():
     data = request.json
-    if not validate_inputs(data, ['mass', 'height']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['mass', 'height']
+
+    validation_result = validate_inputs(data, required)
+    if validation_result is not True:
+        return validation_result
+
     try:
         mass = float(data['mass'])
         height = float(data['height'])
+        result = compute_potential_energy(mass, height)
     except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
+        return handle_invalid_input_error("Inputs must be numbers")
+    except Exception as e:
+        return handle_generic_error(str(e))
 
-    result = compute_potential_energy(mass, height)
     return jsonify({
         "formula": "PE = m * g * h",
         "inputs": {"mass": mass, "height": height},

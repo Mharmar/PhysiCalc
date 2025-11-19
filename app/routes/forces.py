@@ -12,25 +12,31 @@ from app.utils.error_handler import handle_invalid_input_error, handle_missing_i
 
 bp = Blueprint('forces', __name__, url_prefix='/api/forces')
 
+
 # ------------------------
 # Normal Force: N = mg
 # ------------------------
 @bp.route('/normal', methods=['POST'])
 def normal():
     data = request.json
-    if not validate_inputs(data, ['mass']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['mass']
+
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         mass = float(data['mass'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_normal_force(mass)
+        result = compute_normal_force(mass)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "N = mg",
         "inputs": {"mass": mass},
         "result": result
     })
+
 
 # ------------------------
 # Frictional Force: F_f = μN
@@ -38,20 +44,26 @@ def normal():
 @bp.route('/friction', methods=['POST'])
 def friction():
     data = request.json
-    if not validate_inputs(data, ['mu', 'normal_force']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['mu', 'normal_force']
+
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         mu = float(data['mu'])
         normal_force = float(data['normal_force'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_frictional_force(mu, normal_force)
+        result = compute_frictional_force(mu, normal_force)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "F_f = μN",
         "inputs": {"mu": mu, "normal_force": normal_force},
         "result": result
     })
+
 
 # ------------------------
 # Tension Force: T = mg
@@ -59,19 +71,24 @@ def friction():
 @bp.route('/tension', methods=['POST'])
 def tension():
     data = request.json
-    if not validate_inputs(data, ['mass']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['mass']
+
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         mass = float(data['mass'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_tension_force(mass)
+        result = compute_tension_force(mass)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "T = mg",
         "inputs": {"mass": mass},
         "result": result
     })
+
 
 # ------------------------
 # Applied Force: F = Applied force (given directly)
@@ -79,19 +96,24 @@ def tension():
 @bp.route('/applied', methods=['POST'])
 def applied():
     data = request.json
-    if not validate_inputs(data, ['force']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['force']
+
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         force = float(data['force'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_applied_force(force)
+        result = compute_applied_force(force)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "F = Applied force",
         "inputs": {"force": force},
         "result": result
     })
+
 
 # ------------------------
 # Gravitational Force: F = G * (m1 * m2) / r^2
@@ -99,21 +121,26 @@ def applied():
 @bp.route('/gravitational', methods=['POST'])
 def gravitational():
     data = request.json
-    if not validate_inputs(data, ['m1', 'm2', 'r']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['m1', 'm2', 'r']
+
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         m1 = float(data['m1'])
         m2 = float(data['m2'])
         r = float(data['r'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_gravitational_force(m1, m2, r)
+        result = compute_gravitational_force(m1, m2, r)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "F = G * (m1 * m2) / r^2",
         "inputs": {"m1": m1, "m2": m2, "r": r},
         "result": result
     })
+
 
 # ------------------------
 # Electromagnetic Force: F = k_e * (q1 * q2) / r^2
@@ -121,16 +148,20 @@ def gravitational():
 @bp.route('/electromagnetic', methods=['POST'])
 def electromagnetic():
     data = request.json
-    if not validate_inputs(data, ['q1', 'q2', 'r']):
-        return jsonify({"error": "Missing or invalid input values"}), 400
+    required = ['q1', 'q2', 'r']
+
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+
     try:
         q1 = float(data['q1'])
         q2 = float(data['q2'])
         r = float(data['r'])
-    except (ValueError, TypeError):
-        return jsonify({"error": "Inputs must be numbers"}), 400
-
-    result = compute_electromagnetic_force(q1, q2, r)
+        result = compute_electromagnetic_force(q1, q2, r)
+    except (ValueError, TypeError) as e:
+        return handle_invalid_input_error(str(e))
+    
     return jsonify({
         "formula": "F = k_e * (q1 * q2) / r^2",
         "inputs": {"q1": q1, "q2": q2, "r": r},

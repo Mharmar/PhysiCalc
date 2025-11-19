@@ -19,14 +19,20 @@ bp = Blueprint('kinematics', __name__, url_prefix='/api/kinematics')
 def velocity():
     data = request.json
     required = ['u', 'a', 't']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
-
-    u = float(data['u'])
-    a = float(data['a'])
-    t = float(data['t'])
-    result = compute_velocity(u, a, t)
-
+    
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+        
+    try:
+        u = float(data['u'])
+        a = float(data['a'])
+        t = float(data['t'])
+        result = compute_velocity(u, a, t)
+    except ValueError as e:
+        return handle_invalid_input_error(str(e))
+        
     return jsonify({
         "formula": "v = u + a * t",
         "inputs": {"u": u, "a": a, "t": t},
@@ -41,14 +47,20 @@ def velocity():
 def displacement():
     data = request.json
     required = ['u', 'a', 't']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
-
-    u = float(data['u'])
-    a = float(data['a'])
-    t = float(data['t'])
-    result = compute_displacement(u, a, t)
-
+    
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+        
+    try:
+        u = float(data['u'])
+        a = float(data['a'])
+        t = float(data['t'])
+        result = compute_displacement(u, a, t)
+    except ValueError as e:
+        return handle_invalid_input_error(str(e))
+        
     return jsonify({
         "formula": "s = u * t + 0.5 * a * t^2",
         "inputs": {"u": u, "a": a, "t": t},
@@ -63,22 +75,26 @@ def displacement():
 def velocity_squared():
     data = request.json
     required = ['u', 'a', 's']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
-
-    u = float(data['u'])
-    a = float(data['a'])
-    s = float(data['s'])
-    v_squared = compute_velocity_squared(u, a, s)
-
-    # Calculate final velocity (v), the square root of v^2
-    final_velocity = round(v_squared ** 0.5, 2)
-
+    
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+        
+    try:
+        u = float(data['u'])
+        a = float(data['a'])
+        s = float(data['s'])
+        v_squared = compute_velocity_squared(u, a, s)
+        final_velocity = round(v_squared ** 0.5, 2)
+    except ValueError as e:
+        return handle_invalid_input_error(str(e))
+        
     return jsonify({
         "formula": "v^2 = u^2 + 2 * a * s",
         "inputs": {"u": u, "a": a, "s": s},
         "result": v_squared,
-        "final_velocity": final_velocity  # Include the final velocity v
+        "final_velocity": final_velocity
     })
 
 
@@ -89,14 +105,20 @@ def velocity_squared():
 def time():
     data = request.json
     required = ['v', 'u', 'a']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
-
-    v = float(data['v'])
-    u = float(data['u'])
-    a = float(data['a'])
-    result = compute_time(v, u, a)
-
+    
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+        
+    try:
+        v = float(data['v'])
+        u = float(data['u'])
+        a = float(data['a'])
+        result = compute_time(v, u, a)
+    except ValueError as e:
+        return handle_invalid_input_error(str(e))
+        
     return jsonify({
         "formula": "t = (v - u) / a",
         "inputs": {"v": v, "u": u, "a": a},
@@ -111,14 +133,20 @@ def time():
 def acceleration():
     data = request.json
     required = ['v', 'u', 't']
-    if not validate_inputs(data, required):
-        return jsonify({"error": "Missing or invalid input values"}), 400
-
-    v = float(data['v'])
-    u = float(data['u'])
-    t = float(data['t'])
-    result = compute_acceleration(v, u, t)
-
+    
+    # FIX: Check if result is explicitly not True
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
+        
+    try:
+        v = float(data['v'])
+        u = float(data['u'])
+        t = float(data['t'])
+        result = compute_acceleration(v, u, t)
+    except ValueError as e:
+        return handle_invalid_input_error(str(e))
+        
     return jsonify({
         "formula": "a = (v - u) / t",
         "inputs": {"v": v, "u": u, "t": t},
