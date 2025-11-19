@@ -8,19 +8,21 @@
 
 <p>
 <a href="https://www.python.org/">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Python-3.12-blue%3Fstyle%3Dfor-the-badge%26logo%3Dpython%26logoColor%3Dwhite" alt="Python">
+<img src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
 </a>
 <a href="https://flask.palletsprojects.com/">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Flask-3.0-black%3Fstyle%3Dfor-the-badge%26logo%3Dflask%26logoColor%3Dwhite" alt="Flask">
+<img src="https://img.shields.io/badge/Flask-3.0-black?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
 </a>
 <a href="https://docs.pytest.org/">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Testing-Pytest-yellow%3Fstyle%3Dfor-the-badge%26logo%3Dpytest%26logoColor%3Dblack" alt="Pytest">
+<img src="https://img.shields.io/badge/Testing-Pytest-yellow?style=for-the-badge&logo=pytest&logoColor=black" alt="Pytest">
 </a>
 <a href="https://render.com/">
-<img src="https://www.google.com/search?q=https://img.shields.io/badge/Deployed_on-Render-46E3B7%3Fstyle%3Dfor-the-badge%26logo%3Drender%26logoColor%3Dwhite" alt="Render">
+<img src="https://img.shields.io/badge/Deployed_on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render">
 </a>
 </p>
 </div>
+
+<br />
 
 🚀 Overview
 
@@ -68,71 +70,9 @@ Work-Power: Calculates Work done and Power output over time.
 
 We utilize a clean, production-ready folder structure separating logic (formulas), routing (API), and validation (utils).
 
-PhysiCalc/
-├── app/
-│   ├── __init__.py           # App Factory & Blueprint Registration
-│   ├── formulas/             # Pure Python Math Logic
-│   │   ├── electricity.py
-│   │   ├── forces.py
-│   │   ├── kinematics.py
-│   │   ├── projectile.py
-│   │   └── work_energy.py
-│   ├── routes/               # Flask API Endpoints
-│   │   ├── electricity.py
-│   │   ├── forces.py
-│   │   ├── kinematics.py
-│   │   ├── projectile.py
-│   │   └── work_energy.py
-│   └── utils/                # Core Utilities
-│       ├── error_handler.py  # Standardized JSON Error Responses
-│       └── validator.py      # Robust Input Validation
-├── tests/                    # Comprehensive Test Suite (Pytest)
-│   ├── test_electricity.py
-│   ├── test_error_handling.py
-│   ├── test_forces.py
-│   ├── test_kinematics.py
-│   ├── test_projectile.py
-│   └── test_work_energy.py
-├── run.py                    # Entry point
-├── requirements.txt          # Dependencies
-└── README.md                 # Documentation
-
-
 🛠️ Installation & Setup
 
-1. Clone the Repository
-
-git clone [https://github.com/Mharmar/PhysiCalc.git](https://github.com/Mharmar/PhysiCalc.git)
-cd PhysiCalc
-
-
-2. Create a Virtual Environment
-
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
-
-
-3. Install Dependencies
-
-pip install -r requirements.txt
-
-
-4. Run Locally
-
-On Windows (using Waitress):
-
-waitress-serve --listen=*:8000 run:app
-
-
-On Mac/Linux (using Gunicorn):
-
-gunicorn run:app
-
+Quick Start Guide
 
 🧪 Testing
 
@@ -147,42 +87,11 @@ Invalid data types (String instead of Float).
 Mathematical errors (Division by Zero).
 
 To run the full suite:
-
 pytest tests/
-
 
 📡 API Usage Example
 
 Endpoint: POST /api/kinematics/velocity
-
-Request Body:
-
-{
-  "u": 0,    // Initial Velocity
-  "a": 9.8,  // Acceleration
-  "t": 10    // Time
-}
-
-
-Success Response (200 OK):
-
-{
-  "formula": "v = u + a * t",
-  "inputs": {
-    "u": 0.0,
-    "a": 9.8,
-    "t": 10.0
-  },
-  "result": 98.0
-}
-
-
-Error Response (400 Bad Request):
-
-{
-  "error": "Invalid input"
-}
-
 
 <div align="center">
 <sub>Built with ❤️ by Mharmar</sub>
