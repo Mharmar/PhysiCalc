@@ -16,10 +16,44 @@ bp = Blueprint('projectile', __name__, url_prefix='/api/projectile')
 # ------------------------
 @bp.route('/range', methods=['POST'])
 def range_route():
+    """
+    Calculate Horizontal Range (R)
+    ---
+    tags:
+      - Projectile Motion
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - angle
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 20
+            angle:
+              type: number
+              description: Angle of projection (degrees)
+              example: 45
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Range (meters)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['u', 'angle']
 
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -45,10 +79,44 @@ def range_route():
 # ------------------------
 @bp.route('/time', methods=['POST'])
 def time_route():
+    """
+    Calculate Time of Flight (T)
+    ---
+    tags:
+      - Projectile Motion
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - angle
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 20
+            angle:
+              type: number
+              description: Angle of projection (degrees)
+              example: 30
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Time (seconds)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['u', 'angle']
 
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -74,10 +142,44 @@ def time_route():
 # ------------------------
 @bp.route('/height', methods=['POST'])
 def height_route():
+    """
+    Calculate Maximum Height (H)
+    ---
+    tags:
+      - Projectile Motion
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - angle
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 20
+            angle:
+              type: number
+              description: Angle of projection (degrees)
+              example: 60
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Maximum Height (meters)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['u', 'angle']
 
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation

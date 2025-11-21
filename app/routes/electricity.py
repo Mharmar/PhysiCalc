@@ -11,6 +11,41 @@ bp = Blueprint('electricity', __name__, url_prefix='/api/electricity')
 # ------------------------
 @bp.route('/current', methods=['POST'])
 def current_route():
+    """
+    Calculate Current (I)
+    ---
+    tags:
+      - Electricity
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - voltage
+            - resistance
+          properties:
+            voltage:
+              type: number
+              description: Voltage (V)
+              example: 12
+            resistance:
+              type: number
+              description: Resistance (Ω)
+              example: 4
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Current (Amperes)
+      400:
+        description: Invalid input or Zero Division
+    """
     data = request.json
     required = ['voltage', 'resistance']
 
@@ -44,6 +79,41 @@ def current_route():
 # ------------------------
 @bp.route('/voltage', methods=['POST'])
 def voltage_route():
+    """
+    Calculate Voltage (V)
+    ---
+    tags:
+      - Electricity
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - current
+            - resistance
+          properties:
+            current:
+              type: number
+              description: Current (A)
+              example: 2
+            resistance:
+              type: number
+              description: Resistance (Ω)
+              example: 5
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Voltage (Volts)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['current', 'resistance']
 
@@ -72,6 +142,41 @@ def voltage_route():
 # ------------------------
 @bp.route('/resistance', methods=['POST'])
 def resistance_route():
+    """
+    Calculate Resistance (R)
+    ---
+    tags:
+      - Electricity
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - voltage
+            - current
+          properties:
+            voltage:
+              type: number
+              description: Voltage (V)
+              example: 220
+            current:
+              type: number
+              description: Current (A)
+              example: 5
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Resistance (Ohms)
+      400:
+        description: Invalid input or Zero Division
+    """
     data = request.json
     required = ['voltage', 'current']
 
@@ -100,8 +205,45 @@ def resistance_route():
 # ------------------------
 @bp.route('/power', methods=['POST'])
 def power_route():
+    """
+    Calculate Power (P)
+    ---
+    tags:
+      - Electricity
+    description: Calculates power using any two available variables (V, I, R).
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            voltage:
+              type: number
+              description: Voltage (V)
+              example: 10
+            current:
+              type: number
+              description: Current (A)
+              example: 2
+            resistance:
+              type: number
+              description: Resistance (Ω)
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Power (Watts)
+      400:
+        description: Invalid input or Missing Fields
+    """
     data = request.json
     
+    # BLOCK 1: Validate Data Types
     try:
         voltage = float(data['voltage']) if 'voltage' in data else None
         current = float(data['current']) if 'current' in data else None
@@ -109,6 +251,7 @@ def power_route():
     except (ValueError, TypeError):
         return handle_invalid_input_error("Invalid input")
 
+    # BLOCK 2: Run Calculation Logic
     try:
         result = compute_power(voltage, current, resistance)
     except ValueError as e:

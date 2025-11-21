@@ -7,7 +7,7 @@ from app.formulas.kinematics import (
     compute_acceleration
 )
 from app.utils.validator import validate_inputs
-from app.utils.error_handler import handle_invalid_input_error, handle_missing_input_error, handle_zero_division_error, handle_generic_error
+from app.utils.error_handler import handle_invalid_input_error, handle_missing_input_error
 
 bp = Blueprint('kinematics', __name__, url_prefix='/api/kinematics')
 
@@ -17,10 +17,49 @@ bp = Blueprint('kinematics', __name__, url_prefix='/api/kinematics')
 # ------------------------
 @bp.route('/velocity', methods=['POST'])
 def velocity():
+    """
+    Calculate Final Velocity (v)
+    ---
+    tags:
+      - Kinematics
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - a
+            - t
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 0
+            a:
+              type: number
+              description: Acceleration (m/s^2)
+              example: 9.8
+            t:
+              type: number
+              description: Time (s)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Final Velocity
+      400:
+        description: Invalid Input or Missing Fields
+    """
     data = request.json
     required = ['u', 'a', 't']
     
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -45,10 +84,49 @@ def velocity():
 # ------------------------
 @bp.route('/displacement', methods=['POST'])
 def displacement():
+    """
+    Calculate Displacement (s)
+    ---
+    tags:
+      - Kinematics
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - a
+            - t
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 0
+            a:
+              type: number
+              description: Acceleration (m/s^2)
+              example: 9.8
+            t:
+              type: number
+              description: Time (s)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Displacement (meters)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['u', 'a', 't']
     
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -73,10 +151,52 @@ def displacement():
 # ------------------------
 @bp.route('/velocity_squared', methods=['POST'])
 def velocity_squared():
+    """
+    Calculate Final Velocity Squared (v^2)
+    ---
+    tags:
+      - Kinematics
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - u
+            - a
+            - s
+          properties:
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 0
+            a:
+              type: number
+              description: Acceleration (m/s^2)
+              example: 9.8
+            s:
+              type: number
+              description: Displacement (m)
+              example: 100
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Velocity Squared (v^2)
+            final_velocity:
+              type: number
+              description: The square root of result (v)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['u', 'a', 's']
     
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -103,10 +223,49 @@ def velocity_squared():
 # ------------------------
 @bp.route('/time', methods=['POST'])
 def time():
+    """
+    Calculate Time (t)
+    ---
+    tags:
+      - Kinematics
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - v
+            - u
+            - a
+          properties:
+            v:
+              type: number
+              description: Final Velocity (m/s)
+              example: 50
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 0
+            a:
+              type: number
+              description: Acceleration (m/s^2)
+              example: 9.8
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Time (s)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['v', 'u', 'a']
     
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -131,10 +290,49 @@ def time():
 # ------------------------
 @bp.route('/acceleration', methods=['POST'])
 def acceleration():
+    """
+    Calculate Acceleration (a)
+    ---
+    tags:
+      - Kinematics
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - v
+            - u
+            - t
+          properties:
+            v:
+              type: number
+              description: Final Velocity (m/s)
+              example: 50
+            u:
+              type: number
+              description: Initial Velocity (m/s)
+              example: 0
+            t:
+              type: number
+              description: Time (s)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Acceleration (m/s^2)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['v', 'u', 't']
     
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation

@@ -18,6 +18,36 @@ bp = Blueprint('forces', __name__, url_prefix='/api/forces')
 # ------------------------
 @bp.route('/normal', methods=['POST'])
 def normal():
+    """
+    Calculate Normal Force (N)
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - mass
+          properties:
+            mass:
+              type: number
+              description: Mass (kg)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Normal Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['mass']
 
@@ -43,10 +73,44 @@ def normal():
 # ------------------------
 @bp.route('/friction', methods=['POST'])
 def friction():
+    """
+    Calculate Frictional Force (F_f)
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - mu
+            - normal_force
+          properties:
+            mu:
+              type: number
+              description: Coefficient of Friction (μ)
+              example: 0.5
+            normal_force:
+              type: number
+              description: Normal Force (N)
+              example: 98
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Frictional Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['mu', 'normal_force']
 
-    # FIX: Check if result is explicitly not True
     validation = validate_inputs(data, required)
     if validation is not True:
         return validation
@@ -70,6 +134,36 @@ def friction():
 # ------------------------
 @bp.route('/tension', methods=['POST'])
 def tension():
+    """
+    Calculate Tension Force (T)
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - mass
+          properties:
+            mass:
+              type: number
+              description: Mass (kg)
+              example: 5
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Tension Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['mass']
 
@@ -91,10 +185,40 @@ def tension():
 
 
 # ------------------------
-# Applied Force: F = Applied force (given directly)
+# Applied Force: F = Applied force
 # ------------------------
 @bp.route('/applied', methods=['POST'])
 def applied():
+    """
+    Return Applied Force
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - force
+          properties:
+            force:
+              type: number
+              description: The applied force value
+              example: 150
+    responses:
+      200:
+        description: Successful return
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Applied Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['force']
 
@@ -120,6 +244,46 @@ def applied():
 # ------------------------
 @bp.route('/gravitational', methods=['POST'])
 def gravitational():
+    """
+    Calculate Gravitational Force
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - m1
+            - m2
+            - r
+          properties:
+            m1:
+              type: number
+              description: Mass 1 (kg)
+              example: 5.972e24
+            m2:
+              type: number
+              description: Mass 2 (kg)
+              example: 7.348e22
+            r:
+              type: number
+              description: Distance (m)
+              example: 384400000
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Gravitational Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['m1', 'm2', 'r']
 
@@ -147,6 +311,46 @@ def gravitational():
 # ------------------------
 @bp.route('/electromagnetic', methods=['POST'])
 def electromagnetic():
+    """
+    Calculate Electromagnetic Force
+    ---
+    tags:
+      - Forces
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - q1
+            - q2
+            - r
+          properties:
+            q1:
+              type: number
+              description: Charge 1 (Coulombs)
+              example: 1.602e-19
+            q2:
+              type: number
+              description: Charge 2 (Coulombs)
+              example: -1.602e-19
+            r:
+              type: number
+              description: Distance (m)
+              example: 5.29e-11
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Electromagnetic Force (Newtons)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['q1', 'q2', 'r']
 

@@ -10,12 +10,47 @@ bp = Blueprint('work_energy', __name__, url_prefix='/api/work_energy')
 # ------------------------
 @bp.route('/work', methods=['POST'])
 def work_route():
+    """
+    Calculate Work (W)
+    ---
+    tags:
+      - Work & Energy
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - force
+            - distance
+          properties:
+            force:
+              type: number
+              description: Force (N)
+              example: 50
+            distance:
+              type: number
+              description: Distance (m)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Work (Joules)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['force', 'distance']
 
-    validation_result = validate_inputs(data, required)
-    if validation_result is not True:
-        return validation_result
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         force = float(data['force'])
@@ -37,12 +72,47 @@ def work_route():
 # ------------------------
 @bp.route('/power', methods=['POST'])
 def power_route():
+    """
+    Calculate Mechanical Power (P)
+    ---
+    tags:
+      - Work & Energy
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - work
+            - time
+          properties:
+            work:
+              type: number
+              description: Work (J)
+              example: 500
+            time:
+              type: number
+              description: Time (s)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Power (Watts)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['work', 'time']
 
-    validation_result = validate_inputs(data, required)
-    if validation_result is not True:
-        return validation_result
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         work = float(data['work'])
@@ -67,12 +137,47 @@ def power_route():
 # ------------------------
 @bp.route('/kinetic', methods=['POST'])
 def kinetic_route():
+    """
+    Calculate Kinetic Energy (KE)
+    ---
+    tags:
+      - Work & Energy
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - mass
+            - velocity
+          properties:
+            mass:
+              type: number
+              description: Mass (kg)
+              example: 2
+            velocity:
+              type: number
+              description: Velocity (m/s)
+              example: 10
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Kinetic Energy (Joules)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['mass', 'velocity']
 
-    validation_result = validate_inputs(data, required)
-    if validation_result is not True:
-        return validation_result
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         mass = float(data['mass'])
@@ -95,12 +200,47 @@ def kinetic_route():
 # ------------------------
 @bp.route('/potential', methods=['POST'])
 def potential_route():
+    """
+    Calculate Potential Energy (PE)
+    ---
+    tags:
+      - Work & Energy
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - mass
+            - height
+          properties:
+            mass:
+              type: number
+              description: Mass (kg)
+              example: 10
+            height:
+              type: number
+              description: Height (m)
+              example: 5
+    responses:
+      200:
+        description: Successful calculation
+        schema:
+          type: object
+          properties:
+            result:
+              type: number
+              description: Potential Energy (Joules)
+      400:
+        description: Invalid input
+    """
     data = request.json
     required = ['mass', 'height']
 
-    validation_result = validate_inputs(data, required)
-    if validation_result is not True:
-        return validation_result
+    validation = validate_inputs(data, required)
+    if validation is not True:
+        return validation
 
     try:
         mass = float(data['mass'])
