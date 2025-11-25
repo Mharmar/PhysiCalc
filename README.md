@@ -116,7 +116,6 @@ Features:
 * Range
 * Time of flight
 * Maximum height
-* Angle → radians conversion handled internally
 
 ### 🔋 Work & Energy
 
